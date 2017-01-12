@@ -101,10 +101,10 @@ $( document ).ready(function() {
       }else {
         indexOfCurrentSearch--;
       }
-      spansToHighlight[indexOfCurrentSearch].style.backgroundColor = "yellow";
+      spansToHighlight[indexOfCurrentSearch].style.backgroundColor = YELLOW_HIGHLIGHT;
       if (spansToHighlight.length > 1) {
         var prevIndex = indexOfCurrentSearch == spansToHighlight.length - 1 ? 0 : indexOfCurrentSearch + 1;
-        spansToHighlight[prevIndex].style.backgroundColor = "red";
+        spansToHighlight[prevIndex].style.backgroundColor = RED_HIGHLIGHT;
       }
     }
   }
