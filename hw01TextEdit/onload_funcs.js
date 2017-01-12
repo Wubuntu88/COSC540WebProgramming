@@ -1,11 +1,16 @@
+/*
+  Global variable declared:
+  name: description
+  file: the file object whose contents fill the text area
+  initSearchFunc: a function that starts a search and highlights text
+*/
+
 $( document ).ready(function() {
   var fileInput = document.getElementById('fileInputField');
 
-  //var wordsInText= []; // array of words in the text file
-
-  var fillTextArea = function(evt) {
-    var file = fileInput.files[0];
-    textType = /text.*/;
+  var fillTextArea = function(evt) {  //for loading the pre element with text
+    file = fileInput.files[0];
+    var textType = /text.*/;
 
     if (file.type.match(textType)) {
     	var fileReader = new FileReader();
@@ -14,46 +19,60 @@ $( document ).ready(function() {
         var textArea = document.getElementById('user_text');
         var paragraphsInText = fileReader.result.split("\n");
         for(var i = 0; i < paragraphsInText.length; i++) {
-          //if (paragraphsInText[i] != "") {
-            var wordsInParagraph = paragraphsInText[i].split(" ");
-            for(var j = 0; j < wordsInParagraph.length; j++) {
-              if (j == wordsInParagraph.length - 1) {
-                textArea.innerHTML += "<span class=\"spans\">" + wordsInParagraph[j] + "\n</span>";
-              }else {
-                textArea.innerHTML += "<span class=\"spans\">" + wordsInParagraph[j] + " </span>";
-              }
+          var wordsInParagraph = paragraphsInText[i].split(" ");
+          for(var j = 0; j < wordsInParagraph.length; j++) {
+            if (j == wordsInParagraph.length - 1) {
+              textArea.innerHTML +=
+                  "<span class=\"spans\">" + wordsInParagraph[j] + "\n</span>";
+            }else {
+              textArea.innerHTML +=
+                  "<span class=\"spans\">" + wordsInParagraph[j] + " </span>";
             }
-          //}
+          }
         }
-
     	}
 
     	fileReader.readAsText(file);
     }else {
-    	textArea.innerHTML = "Unable to load file; incompatible file type.  Only text files are supported.";
+    	textArea.innerHTML = "Unable to load file; incompatible file type.  " +
+                            "Only text files are supported.";
     }
   }
-
+  //now the text area will be filled when the file input value changes
   fileInput.addEventListener('change', fillTextArea);
 
   /*
     Adding Event Listener for searching for strings
   */
 
+  //color constants used for highlighting text
   var RED_HIGHLIGHT = "#ffb7b7";
   var YELLOW_HIGHLIGHT = "#fff2a8";
 
-  var searchString = null; // last search string for when the user clicked the search button
+  // last search string for when the user clicked the search button
+  var searchString = null;
 
+  /*
+    Searches the spans containing the words and checks to see if any one matches
+    If there is a match, it will set the class name to 'spans colored' and
+    will color the matching spans a light red color.
+    If there had been a previous search, it will reset all of the spans
+    Input: a string that the user is searching for
+    External variables that it modifies: indexOfCurrentSearch
+  */
   initSearchFunc = function(strToFind){
     indexOfCurrentSearch = -1;
     var spansToHighlight = document.getElementsByClassName("spans");
-    if ( (searchString == null || strToFind != searchString) && strToFind != "") {//if condition maybe bad
-      //if there was a previous search term, we remove the 'colored' additional class
+    if ( (searchString == null || strToFind != searchString) &&
+          strToFind != "") {//if condition maybe bad
+      //if there was a previous search term, we remove the 'colored' class
       //and reset the previously serched terms' background color to transparent
       $( "span" ).removeClass("colored");
       $(".spans").css("background-color", "transparent");
 
+      //We find all words that match the search string; they can have . or ,
+      //following them.  We then highlight the spans containing those words red
+      //and set their class to 'spans colored'
       searchString = strToFind;
       var re = new RegExp("^" + strToFind + "[.,]{0,1}\\s*$");
       $(".spans").css("background-color", "transparent");
@@ -68,21 +87,29 @@ $( document ).ready(function() {
     }
   }
 
+  //makes it so the initSearchFunc is called when user clicks search button
   var searchButton = document.getElementById("search_button");
   searchButton.addEventListener('click', function() {
     var searchText = document.getElementById("search_input").value;
     initSearchFunc(searchText);
   });
 
-
+  /*
+    'Goes to' the next search button.  Increment the 'indexOfCurrentSearch'
+    variable, highlights the next term yellow, sets the 'previously' yellow
+    highlighted element back to red.
+  */
   var indexOfCurrentSearch = -1;
   var gotoNextSearchItem = function() {
     if (searchString != null) {
       var spansToHighlight = document.getElementsByClassName("spans colored");
-      indexOfCurrentSearch = (indexOfCurrentSearch + 1) % spansToHighlight.length;
-      spansToHighlight[indexOfCurrentSearch].style.backgroundColor = YELLOW_HIGHLIGHT;
+      indexOfCurrentSearch =
+                        (indexOfCurrentSearch + 1) % spansToHighlight.length;
+      spansToHighlight[indexOfCurrentSearch].style.backgroundColor =
+                                                              YELLOW_HIGHLIGHT;
       if (spansToHighlight.length > 1) {
-        var prevIndex = indexOfCurrentSearch == 0 ? spansToHighlight.length - 1 : indexOfCurrentSearch - 1;
+        var prevIndex = indexOfCurrentSearch == 0 ?
+                        spansToHighlight.length - 1 : indexOfCurrentSearch - 1;
         spansToHighlight[prevIndex].style.backgroundColor = RED_HIGHLIGHT;
       }
     }
@@ -93,17 +120,24 @@ $( document ).ready(function() {
     gotoNextSearchItem();
   })
 
+  /*
+    Performs similarly to the gotoNextSearchItem, except that this one
+    does it in reverse.
+  */
   var gotoPreviousSearchItem = function() {
     if (searchString != null) {
       var spansToHighlight = document.getElementsByClassName("spans colored");
-      if (indexOfCurrentSearch == -1 || indexOfCurrentSearch == 0) { //if the user has not clicked the next button yet and no term is highlighted yellow
+      //if the user has not clicked the next button and no term is yellow
+      if (indexOfCurrentSearch == -1 || indexOfCurrentSearch == 0) {
         indexOfCurrentSearch = spansToHighlight.length - 1;
       }else {
         indexOfCurrentSearch--;
       }
-      spansToHighlight[indexOfCurrentSearch].style.backgroundColor = YELLOW_HIGHLIGHT;
+      spansToHighlight[indexOfCurrentSearch].style.backgroundColor =
+                                                              YELLOW_HIGHLIGHT;
       if (spansToHighlight.length > 1) {
-        var prevIndex = indexOfCurrentSearch == spansToHighlight.length - 1 ? 0 : indexOfCurrentSearch + 1;
+        var prevIndex = indexOfCurrentSearch == spansToHighlight.length - 1 ?
+                                                  0 : indexOfCurrentSearch + 1;
         spansToHighlight[prevIndex].style.backgroundColor = RED_HIGHLIGHT;
       }
     }
@@ -115,7 +149,13 @@ $( document ).ready(function() {
   })
 
   /*
-    Replace functionality
+    Matches the currently selected string with the replace string.
+    This will replace only the text that matches with a regex;
+    If the text in the span has some trailing text that does not match with
+    the replace string (such as a . or ,), then that punctuation will
+    not be replaced.
+    Note: this only replaces the currently selected string (i.e. the one that
+    is highlighted in yellow).
   */
   var replaceSelectedItemWithString = function(replaceString) {
     if (indexOfCurrentSearch == -1) { //if the user has not selected anything
@@ -134,6 +174,11 @@ $( document ).ready(function() {
     replaceSelectedItemWithString(replaceString);
   })
 
+  /*
+    Performs similarly to the replaceAllSelectedItemsWithString function,
+    except that this function replaces all occurences found in the
+    initSearchFunc function.
+  */
   var replaceAllSelectedItemsWithString = function(replaceString) {
     if (searchString != null) {
       var spansToHighlight = document.getElementsByClassName("spans colored");
@@ -155,16 +200,22 @@ $( document ).ready(function() {
   })
 
 });
-
-//I should change this so that the initSearchFunc is not a global function
+/*
+  Performs the initSearchFunc when the user hits enter in the search bar.
+*/
 $('#search_input').on("keyup", function(e) {
-    if (e.keyCode == 13) {  //if enter is pressed (keyCode of 13), we will call the search function
+    //if enter is pressed (keyCode of 13), we will call the search function
+    if (e.keyCode == 13) {
       var searchText = document.getElementById("search_input").value;
       initSearchFunc(searchText);
     }
 });
 /* the following code was taken from this website
 http://codepen.io/davidelrizzo/pen/cxsGb
+  This code downloads the text file in Chrome and opens up a new page in Safari.
+  It will write the text in the text area to the downloads folder in Chrome.
+  It will use the same filename as the file loaded, but will not overwrite
+  the file.
 */
 $("#save_button").click( function() {
   var text = "";
@@ -173,8 +224,7 @@ $("#save_button").click( function() {
     text += spansToHighlight[i].innerHTML
   }
 
-  var filename = "LI";
+  var filename = file.name;
   var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, filename + ".txt");
-
+  saveAs(blob, filename);
 });
