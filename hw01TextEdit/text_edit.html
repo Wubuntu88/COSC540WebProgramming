@@ -2,10 +2,15 @@
 <!--
 Author: William Gillespie
 Course: COSC 540
-Assignment: Homework 1 (Text Editor)
+Assignment: Homework 1 (Search and Replace)
   Assigned: 2017/01/05
   Due: 2017/01/12
 Semester: Winter 2017
+
+This application allows the user to load a text file, view that text file,
+perform search and replace operations on the words in that text.
+There is also a replace all feature.
+The user may also download the edited file to the downloads folder.
 
 Sources:
 I utilized Bootstrap and Jquery extensively in this project.
@@ -26,7 +31,7 @@ http://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+  <!-- script for file saving -->
   <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/FileSaver.js'></script>
 </head>
 <body background-color="grey">
@@ -118,7 +123,6 @@ http://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
   pre{
     white-space: pre-wrap;
   }
-
 </style>
 
 <script src="onload_funcs.js"></script>
