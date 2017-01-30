@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Client Side Summing Up</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- I found the following imports from w3schools http://www.w3schools.com/bootstrap/bootstrap_get_started.asp -->
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color:#d3d3d3;">
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <div class="navbar-brand">Pretend Like You're Buying Stuff </div>
+        <div class="navbar-brand"><span class="glyphicon glyphicon-gift"></span></div>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <form id="make_purchase_form">
+    <table border='3' class="table table-striped">
+      <tr>
+        <th>ID</th><th>Item</th><th>Cost Per Item</th><th>Quantity Ordered</th>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td class="item_name">Pen</td>
+        <td class="item_price">2</td>
+        <td>
+          <select class="form-control item_quantity" id="pen_order_quantity">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>55</td>
+        <td class="item_name">Pencil</td>
+        <td class="item_price">1</td>
+        <td>
+          <select class="form-control item_quantity" id="pencil_order_quantity">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>57</td>
+        <td class="item_name">Paper</td>
+        <td class="item_price">30</td>
+        <td>
+          <select class="form-control item_quantity" id="paper_order_quantity">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>60</td>
+        <td class="item_name">Stapler</td>
+        <td class="item_price">50</td>
+        <td>
+          <select class="form-control item_quantity" id="stapler_order_quantity">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+    <button type="submit" class="btn btn-default pull-right">Calculate Order</button>
+    <form>
+  </div>
+  <div class="container-fluid" id="invoice">
+    <!-- to be filled in by script-->
+  </div>
+</body>
+<script>
+$("#make_purchase_form").on('submit', function (e) {
+   //get prices of items
+   var prices_tags = document.getElementsByClassName("item_price");
+   var prices = []
+   for(p of prices_tags){
+     prices.push(parseInt(p.innerHTML));
+   }
+
+   //get names of items
+   names_tags = document.getElementsByClassName("item_name");
+   item_names = [];
+   for(n of names_tags){
+     item_names.push(n.innerHTML);
+   }
+
+   quantity_tags = document.getElementsByClassName("form-control item_quantity");
+   item_quantities = [];
+   for(q of quantity_tags){
+     item_quantities.push(q.value);
+   }
+
+   //make the table now
+   var grand_total = 0;
+   var table_string = "<table border='3' class='table table-striped'>";
+   table_string += "<caption>Invoice</caption>";
+   table_string += "<tr><th>Item</th><th>Cost Per Item</th><th>Quantity Ordered</th><th>Total</th></tr>";
+   for(var i = 0; i < item_quantities.length; i++){
+     if(item_quantities[i] > 0){
+       var item_quant = parseInt(item_quantities[i]);
+       var item_price = parseInt(prices[i]);
+       var row_total = item_price * item_quant;
+       table_string += "<tr><td>" + item_names[i] + "</td><td>" + prices[i] + "</td><td>" + item_quantities[i] + "</td><td>" + row_total + "</td></tr>";
+
+       grand_total += row_total;
+     }
+   }
+   var string_hex_color = "#7da3a3";
+   table_string += "<tr><td></td><td></td><td style='background-color:#7da3a3'>Grand Total</td><td style='background-color:#7da3a3'>" + grand_total + "</td></tr>";
+   table_string += "</table>";
+
+   $("#invoice").html(table_string);
+   //stop form submission
+   e.preventDefault();
+});
+
+</script>
+</html>
