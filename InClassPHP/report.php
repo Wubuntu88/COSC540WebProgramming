@@ -41,14 +41,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       echo "<p>your description: " . $description . "</p>";
     }
 
-
     if (empty($_REQUEST['awake'])) {
       echo "<p>awake: unknown<p>";
     } else {
       $awake = $_REQUEST['awake'];
       echo "<p>awake: " . $awake . "<p>";
     }
-
 }
 ?>
 
