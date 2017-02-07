@@ -1,4 +1,9 @@
 <?php
+/*
+This script accepts a request from the a client that has defined an 'action'
+and has 'data' on an order.  This script calcuates the order and sends back
+an invoice table.
+*/
   session_start();
   if(isset($_POST['action']) && $_POST['action'] != "")
   {

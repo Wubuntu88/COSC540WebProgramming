@@ -1,3 +1,11 @@
+<!--
+Author: William Gillespie
+Course: COSC 540
+Assignment: Homework 1 (Search and Replace)
+  Assigned: 2017/01/05
+  Due: 2017/01/12
+Semester: Winter 2017
+-->
 <? php
   session_start();
   #include("mysql_connect.php");
