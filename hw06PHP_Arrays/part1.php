@@ -1,6 +1,6 @@
 <?php
 //includes the method that initilized the array of hashmaps.
-include('init_array_item.php');
+include('inventory_funcs.php');
 
 $number_of_items = 0;
 $total_cost_of_items = 0;
