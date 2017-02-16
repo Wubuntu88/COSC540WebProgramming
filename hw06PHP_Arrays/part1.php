@@ -1,4 +1,9 @@
 <?php
+/*
+Author: William  Gillespie
+URL:
+*/
+
 //includes the method that initilized the array of hashmaps.
 include('inventory_funcs.php');
 

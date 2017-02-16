@@ -1,4 +1,8 @@
 <?php
+/*
+Author: William  Gillespie
+This code has the hellper functions for the Eucher hands assignment. 
+*/
 function init_deck(){
   $arr = array();
   for($i = 0; $i < 52;$i++) {

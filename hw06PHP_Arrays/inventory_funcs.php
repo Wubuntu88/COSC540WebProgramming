@@ -1,4 +1,8 @@
 <?php
+/*
+Author: William  Gillespie
+This code has the helper functions for part1.php, part2.php, and part5.php 
+*/
 function init_item_array(){
   $array = array();
   $array[] = array(

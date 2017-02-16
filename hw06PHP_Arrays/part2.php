@@ -1,5 +1,9 @@
 <?php
-include('init_array_item.php');
+/*
+Author: William  Gillespie
+URL:
+*/
+include('inventory_funcs.php');
 
 function value_for_stock($inventory_item) {
   return array($inventory_item['name'], $inventory_item['in_stock'] * $inventory_item['per_item_cost']);

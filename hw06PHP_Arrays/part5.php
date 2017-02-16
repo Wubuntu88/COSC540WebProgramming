@@ -1,4 +1,8 @@
 <?php
+/*
+Author: William  Gillespie
+URL:
+*/
 include('inventory_funcs.php');
 echo '<h1>Original Inventory</h1>';
 $inventory = init_item_array();
