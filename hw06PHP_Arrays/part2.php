@@ -1,7 +1,7 @@
 <?php
 /*
 Author: William  Gillespie
-URL:
+URL: http://people.emich.edu/wgilles1/hw06PHP_Arrays/part2.php
 */
 include('inventory_funcs.php');
 
@@ -19,6 +19,5 @@ foreach($item_stock_values as $name_value){
 }
 
 echo json_encode($arr_hashmap);
-
 
  ?>

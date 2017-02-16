@@ -1,7 +1,7 @@
 <?php
 /*
 Author: William  Gillespie
-URL:
+URL: http://people.emich.edu/wgilles1/hw06PHP_Arrays/part5.php
 */
 include('inventory_funcs.php');
 echo '<h1>Original Inventory</h1>';
