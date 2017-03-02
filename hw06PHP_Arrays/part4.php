@@ -1,7 +1,7 @@
 <?php
 /*
 Author: William  Gillespie
-URL:
+URL: http://people.emich.edu/wgilles1/hw06PHP_Arrays/part4.php
 */
 include('part3_cards_functions.php');
 $deck = init_deck();

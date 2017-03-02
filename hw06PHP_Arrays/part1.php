@@ -1,7 +1,7 @@
 <?php
 /*
 Author: William  Gillespie
-URL:
+URL: http://people.emich.edu/wgilles1/hw06PHP_Arrays/part1.php
 */
 
 //includes the method that initilized the array of hashmaps.
