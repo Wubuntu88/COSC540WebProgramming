@@ -29,7 +29,7 @@ WHERE
 B.booking_id=5128
 
 #8)
-SELECT last_name,first_name, address, SUM(nights) as nights, guest_id
+SELECT last_name,first_name, address, SUM(nights) as nights
 FROM
     (SELECT last_name,first_name,address,COALESCE(nights,NULL,0) as nights, guest.id as guest_id
     FROM guest
