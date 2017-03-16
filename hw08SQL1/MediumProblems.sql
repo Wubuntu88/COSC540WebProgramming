@@ -1,3 +1,18 @@
+#6)
+SELECT sum(B.nights*R.amount)
+FROM guest as G, rate as R, booking as B
+WHERE
+B.room_type_requested=R.room_type
+AND
+B.occupants=R.occupancy
+AND
+B.guest_id=G.id
+AND
+G.first_name='Ruth'
+AND
+G.last_name='Cadbury'
+GROUP BY G.id;
+
 #7)
 SELECT R.amount * B.nights + E.extra_amount as Total
 FROM booking as B
