@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS PropertyForRent;
 SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE Branch (
-	branchNo int NOT NULL AUTO_INCREMENT,
+    branchNo int NOT NULL AUTO_INCREMENT,
     street varchar(20) NOT NULL,
     city varchar(15) NOT NULL,
     postcode varchar(5) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE Branch (
 );
 
 CREATE TABLE Staff (
-	staffNo int NOT NULL AUTO_INCREMENT,
+    staffNo int NOT NULL AUTO_INCREMENT,
     fName varchar(15) NOT NULL,
     lName varchar(15) NOT NULL,
     position varchar(15) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE Staff (
 );
 
 CREATE TABLE Client( #client
-	clientNo int NOT NULL AUTO_INCREMENT,
+    clientNo int NOT NULL AUTO_INCREMENT,
     fName varchar(20) NOT NULL,
     lName varchar(20) NOT NULL,
     telNo varchar(20),
@@ -44,10 +44,10 @@ CREATE TABLE Client( #client
 );
 
 CREATE TABLE PrivateOwner(
-	ownerNo int NOT NULL AUTO_INCREMENT,
+    ownerNo int NOT NULL AUTO_INCREMENT,
     fName varchar(20) NOT NULL,
     lName varchar(20) NOT NULL,
-	address varchar(20),
+    address varchar(20),
     telNo varchar(20),
     eMail varchar(20),
     password varchar(20) NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE PrivateOwner(
 );
 
 CREATE TABLE PropertyForRent (
-	propertyNo int NOT NULL AUTO_INCREMENT,
+    propertyNo int NOT NULL AUTO_INCREMENT,
     street varchar(20) NOT NULL,
     city varchar(15) NOT NULL,
     postcode varchar(5) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE PropertyForRent (
 );
 
 CREATE TABLE Viewing(
-	clientNo int NOT NULL,
+    clientNo int NOT NULL,
     propertyNo int NOT NULL,
     viewDate date NOT NULL,
     comments varchar(50),
@@ -80,17 +80,3 @@ CREATE TABLE Viewing(
     FOREIGN KEY(clientNo) REFERENCES Client(clientNo),
     FOREIGN KEY(propertyNo) REFERENCES PropertyForRent(propertyNo)
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
