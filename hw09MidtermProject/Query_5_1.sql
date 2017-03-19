@@ -1,10 +1,8 @@
 SELECT fName, lName, DOB
 FROM
-Staff
-JOIN
-(SELECT staffNo, min(DOB) FROM Staff) YoungestEmployee
-ON
-Staff.staffNo=YoungestEmployee.staffNo;
+Staff, (SELECT max(DOB) AS maxDOB FROM Staff) YoungestDOB
+WHERE
+Staff.DOB=YoungestDOB.maxDOB;
 /*
 Answer:
 'Mary', 'Howe', '1970-01-19'
