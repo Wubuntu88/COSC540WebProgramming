@@ -132,7 +132,7 @@ VALUES
 /* INSERT INTO PropertyForRent */
 INSERT INTO PropertyForRent
 (propertyNo, street, city, postcode, type, rooms, rent, ownerNo, staffNo, branchNo)
-VALUES 
+VALUES
 ('PA14', '16 Holhead', 'Aberdeen', 'AB755U', 'House', 6, 650, 'CO46', 'SA9', 'b007'),
 ('PL94', '6 Argyll St', 'London', 'NW2', 'Flat', 4, 400, 'CO87', 'SL41', 'b005'),
 ('PG4', '6 Lawrence St', 'Glasgow', 'G119QX', 'Flat', 3, 350, 'CO40', 'SG5', 'b003'),
@@ -143,11 +143,11 @@ VALUES
 INSERT INTO Viewing
 (clientNo, propertyNo, viewDate, comments)
 VALUES
-('CR56', 'PA14', '2013-05-13', 'too small'),
-('CR76', 'PG4', '2013-04-13', 'too remote'),
-('CR56', 'PG4', '2013-04-13', 'bad views'),
-('CR62', 'PA14', '2013-05-13', 'no dining room'),
-('CR56', 'PG36', '2013-04-13', 'small interior');
+('CR56', 'PA14', '2013-05-24', 'too small'),
+('CR76', 'PG4', '2013-04-20', 'too remote'),
+('CR56', 'PG4', '2013-05-26', 'bad views'),
+('CR62', 'PA14', '2013-05-14', 'no dining room'),
+('CR56', 'PG36', '2013-04-28', 'small interior');
 
 
 
