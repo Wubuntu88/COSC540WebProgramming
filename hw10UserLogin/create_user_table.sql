@@ -1,0 +1,9 @@
+create table user if not exists (
+    id int not null autoincrement,
+    user_name varchar(20) not null,
+    first_name varchar(20) not null,
+    last_name varchar(20) not null,
+    email_address varchar(30) not null,
+    password varchar(20) not null,
+    primary key (id)
+);
