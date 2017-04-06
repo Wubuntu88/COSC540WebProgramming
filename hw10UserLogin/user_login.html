@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <!--
+Program: User Creation
 Author: William Gillespie
 Course: COSC 540
 Assignment: Homework 10 (User Login)
   Assigned: 2017/03/30
-  Due: 2017/03/06
+  Due: 2017/04/06
 Semester: Winter 2017
 
 Sources:
@@ -66,18 +67,20 @@ http://www.w3schools.com/bootstrap/default.asp
       $.ajax({
     		method: "POST",
     		url: "create_user.php",
-    		data: {action: "send_purchase",
-               data: username_and_password},
+    		data: {
+             action: "send_purchase",
+             data: username_and_password
+            },
     		success: function(output) {
     			try{
-            document.getElementById("status_message").innerHTML = output;
+                    document.getElementById("status_message").innerHTML = output;
     			}catch(e){
     				console.log("error:" . e);
     			}
     		}
     	});
     }
-    e.preventDefault();
+    e.preventDefault(); // prevents default form action because I already sent the request via ajax
   });
 </script>
 
