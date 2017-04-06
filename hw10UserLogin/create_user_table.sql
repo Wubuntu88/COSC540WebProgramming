@@ -1,5 +1,5 @@
-create table user if not exists (
-    id int not null autoincrement,
+create table if not exists user (
+    id int not null auto_increment,
     user_name varchar(20) not null,
     first_name varchar(20) not null,
     last_name varchar(20) not null,
