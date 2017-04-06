@@ -4,9 +4,8 @@ Author: William Gillespie
 Course: COSC 540
 Assignment: Homework 10 (User Login)
   Assigned: 2017/03/30
-  Due: 2017/03/03
+  Due: 2017/03/06
 Semester: Winter 2017
-
 
 Sources:
 I utilized Bootstrap and Jquery extensively in this project.
@@ -28,8 +27,58 @@ http://www.w3schools.com/bootstrap/default.asp
 </head>
 <body background-color="grey">
 
-
+<form id="create_username_form">
+  <label>Username</label>
+  <input id="username_input" type="text" placeholder="Enter Username"><br>
+  <label>Password</label>
+  <input id="password_input" type="text" placeholder="Enter Password"><br>
+  <label>First Name</label>
+  <input id="firstname_input" type="text" placeholder="Enter First Name"><br>
+  <label>Last Name</label>
+  <input id="lastname_input" type="text" placeholder="Enter Last Name"><br>
+  <label>Email</label>
+  <input id="email_input" type="text" placeholder="Enter Email"><br>
+  <button type="submit" class="btn btn-primary">Create User</button>
+</form>
+<div id="status_message"></div>
 
 </body>
+
+<script>
+  $("#create_username_form").on("submit", function(e) {
+    var the_username = document.getElementById("username_input").value;
+    var the_password = document.getElementById("password_input").value;
+    var the_firstname = document.getElementById("firstname_input").value;
+    var the_lastname = document.getElementById("lastname_input").value;
+    var the_email = document.getElementById("email_input").value;
+
+    var min_length = 3
+    if (the_username == "" || the_password == "" || the_username.length < min_length || the_password.length < min_length) {
+      document.getElementById("status_message").innerHTML = "invalid username or password";
+    }else{
+      var username_and_password = {
+        username: the_username,
+        password: the_password,
+        firstname: the_firstname,
+        lastname: the_lastname,
+        email: the_email
+      }
+      $.ajax({
+    		method: "POST",
+    		url: "create_user.php",
+    		data: {action: "send_purchase",
+               data: username_and_password},
+    		success: function(output) {
+    			try{
+            document.getElementById("status_message").innerHTML = output;
+    			}catch(e){
+    				console.log("error:" . e);
+    			}
+    		}
+    	});
+    }
+    e.preventDefault();
+  });
+</script>
 
 </html>
