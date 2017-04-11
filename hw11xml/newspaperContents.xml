@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="newspaper.xsl" ?>
+<!--
+author: William Gillespie
+assignment: hw11 xml / xsl
+course: COSC 540 Web Programming
+date: 2017-04-11
+-->
+<!DOCTYPE NEWSPAPER [
+
+<!ELEMENT NEWSPAPER (ARTICLE+)>
+<!ELEMENT ARTICLE (HEADLINE,BYLINE,LEAD,BODY,NOTES)>
+<!ELEMENT HEADLINE (#PCDATA)>
+<!ELEMENT BYLINE (#PCDATA)>
+<!ELEMENT LEAD (#PCDATA)>
+<!ELEMENT BODY (#PCDATA)>
+<!ELEMENT NOTES (#PCDATA)>
+
+<!ATTLIST ARTICLE AUTHOR CDATA #REQUIRED>
+<!ATTLIST ARTICLE EDITOR CDATA #IMPLIED>
+<!ATTLIST ARTICLE DATE CDATA #IMPLIED>
+<!ATTLIST ARTICLE EDITION CDATA #IMPLIED>
+
+<!ENTITY NEWSPAPER "Random Newspaper">
+<!ENTITY PUBLISHER "Random Publiser">
+<!ENTITY COPYRIGHT "Copyright 2017 Random Newspaper">
+
+]>
+<NEWSPAPER>
+  <ARTICLE>
+    <HEADLINE>Random Headline 1</HEADLINE>
+    <BYLINE>John Doe</BYLINE>
+    <LEAD>Random Headline 1</LEAD>
+    <BODY>Random Body 1</BODY>
+    <NOTES>&NEWSPAPER;&PUBLISHER;&COPYRIGHT;</NOTES>
+  </ARTICLE>
+
+  <ARTICLE>
+    <HEADLINE>Random Headline 2</HEADLINE>
+    <BYLINE>Jane Doe</BYLINE>
+    <LEAD>Random Headline 2</LEAD>
+    <BODY>Random Body 2</BODY>
+    <NOTES>&NEWSPAPER;&PUBLISHER;&COPYRIGHT;</NOTES>
+  </ARTICLE>
+</NEWSPAPER>
