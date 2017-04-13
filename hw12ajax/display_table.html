@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+Assignment: Display a table with AJAX
+Author: William Gillespie
+Date Assigned: 2017-04-11
+Date Due: 2017-04-13
+-->
+<html>
+<head>
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!-- Bootstrap Library -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+  <title>Display Item Table</title>
+</head>
+
+<body>
+  <table id='container' class='table table-inverse table-bordered'></table>
+</body>
+<script>
+/*
+takes json encoded data of rows about item info and generates a string table
+from it.  A string representation of a table is returned.
+*/
+function generate_table(json_encoded_data){
+  var contents = JSON.parse(json_encoded_data);
+  if(contents.length == 0){
+    return "empty table";
+  }
+
+  var table_contents = "<thead class=\"thead-default\"><tr>";
+  //get the column names of the columns
+  var the_keys = Object.keys(contents[0])
+
+  //create the header row
+  for(var key of the_keys){
+    table_contents += "<th>" + key + "</th>";
+  }
+  table_contents += "</tr></thread>";
+
+  //create the table rows for the contents
+  for(var i = 0; i < contents.length;i++){
+    table_contents += "<tr>";
+    for(var key of the_keys){
+      table_contents += "<td>" + contents[i][key] + "</td>";
+    }
+    table_contents += "</tr>";
+  }
+  return table_contents;
+}
+/*
+  Makes an ajax call via Jquery to fetch the item info.
+  The innerHTML of the courses table is set when the asynchronous call finishes.
+*/
+function fetch_item_details() {
+	$.ajax({
+		method: "POST",
+		url: "return_table_info.php",
+		data: {action: "fetch_item_details"},
+		success: function(output) {
+			try{
+        var table_contents = generate_table(output);
+        var course_detail_table = document.getElementById("container");
+        course_detail_table.innerHTML = table_contents;
+			}catch(e){
+				console.log(e);
+			}
+		}
+	});
+}
+/*
+  Calls the fetch_item_details() method when the document has loaded.
+  This will fill the table showing the items in the Items table.
+*/
+$( document ).ready(function() {
+  fetch_item_details();
+});
+</script>
+</html>
