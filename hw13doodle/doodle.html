@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!--
+Assignment: Doodle Clone
+Author: William Gillespie
+Date Assigned: 2017-04-13
+Date Due: 2017-04-18
+-->
+<html>
+<head>
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!-- Bootstrap Library -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+  <title>Doodle</title>
+</head>
+
+<body>
+  <table id='container' class='table table-inverse table-bordered'></table>
+</body>
+<script>
+
+function generate_table(json_encoded_data){
+  var contents = JSON.parse(json_encoded_data);
+  if(typeof(contents.header) !== 'undefined'){//if only a header is returned, make a table heaer and return it.
+    var table_header = "<thead id=\'thread_container\' class=\"thead-default\"><tr>";
+    for(var index = 0; index < contents.header.length; index++){
+      table_header += "<th>" + contents.header[index] + "</th>";
+    }
+    table_header += "<th></th>";
+    table_header += "</tr></thread>";
+    return table_header;
+  }
+
+  var table_contents = "<thead id=\'thread_container\' class=\"thead-default\"><tr>";
+  //get the column names of the columns
+  var the_keys = Object.keys(contents[0])
+
+  //create the header row
+  for(var key of the_keys){
+    table_contents += "<th>" + key + "</th>";
+  }
+  table_contents += "<th></th>";
+  table_contents += "</tr></thread>";
+
+  //create the table rows for the contents
+  for(var i = 0; i < contents.length;i++){
+    table_contents += "<tr>";
+    for(var key of the_keys){
+      if(contents[i][key] == '1'){
+        table_contents += "<td style=\'background-color:darkgrey\' align=\'center\';>	\u6765</td>";
+      }else if (contents[i][key] == '0'){
+        table_contents += "<td align=\'center\';>\u4E0D</td>"; // chinese symbol for 'no';
+      }else{
+        table_contents += "<td id=\'username_" + i + "\'>" + contents[i][key] + "</td>";
+      }
+
+    }
+    table_contents += "<td><button id=\'delete_" + i + "\' class=\'btn btn-danger\' onclick=\'delete_user(this)\'>delete</button></td>";
+    table_contents += "</tr>";
+  }
+  return table_contents;
+}
+
+function generate_new_input_row(){
+  var row = document.createElement('tr');
+  $(row).attr({
+    'id': 'new_input_row'
+  });
+
+  var name_box = document.createElement('td');
+  $(name_box).attr({
+    'align': 'center'
+  });
+  var name_input = document.createElement('input');
+  $(name_input).attr({
+    'id': 'name_input',
+    'type': 'text',
+    'class': 'form-control',
+    'placeholder': 'Your Name Here'
+  });
+  $(name_box).append(name_input);
+
+  $(row).append(name_box);
+
+  for(var i = 0; i < 6; i++){
+    var td = document.createElement('td');
+    $(td).attr({
+      'align': 'center'
+    });
+    var radio_button = document.createElement('input');
+    $(radio_button).attr({
+      'type': 'checkbox',
+      'class': 'new_input_radio_buttons'
+    });
+    $(td).append(radio_button);
+    $(row).append(td);
+  }
+  var submit_td = document.createElement('td');
+
+  var submit_button = document.createElement('button');
+  $(submit_button).attr({
+    'onclick': 'submit_schedule()',
+    'class': 'btn btn-success'
+  });
+  submit_button.innerHTML = 'Submit';
+  $(submit_td).append(submit_button);
+
+  $(row).append(submit_td);
+  return row;
+}
+
+function submit_schedule(){
+  var username_element = document.getElementById('name_input');
+  var schedule_choices = document.getElementsByClassName("new_input_radio_buttons");
+  if(username_element != null){
+    var user_schedule_info = {
+      username: username_element.value,
+      time1: schedule_choices[0].checked == false ? 'false' : 'true',
+      time2: schedule_choices[1].checked == false ? 'false' : 'true',
+      time3: schedule_choices[2].checked == false ? 'false' : 'true',
+      time4: schedule_choices[3].checked == false ? 'false' : 'true',
+      time5: schedule_choices[4].checked == false ? 'false' : 'true',
+      time6: schedule_choices[5].checked == false ? 'false' : 'true'
+    };
+
+    $.ajax({
+  		method: "POST",
+  		url: "add_schedule_instance.php",
+  		data: {
+        action: "add_schedule_of_user",
+        schedule_instance: user_schedule_info
+      },
+  		success: function(output) {
+  			try{
+          fetch_schedule_details();
+  			}catch(e){
+  				console.log(e);
+  			}
+  		}
+  	});
+  }
+}
+
+function fetch_schedule_details() {
+	$.ajax({
+		method: "POST",
+		url: "return_schedule.php",
+		data: {action: "fetch_schedule_details"},
+		success: function(output) {
+			try{
+        var table_contents = generate_table(output);
+        var course_detail_table = document.getElementById("container");
+        course_detail_table.innerHTML = table_contents;
+        var the_new_input_row = generate_new_input_row();
+        $('#thread_container').append(the_new_input_row);
+			}catch(e){
+				console.log(e);
+			}
+		}
+	});
+}
+
+function delete_user(delete_button){
+  var id_value = delete_button.id;
+  var ith_row_string_split = delete_button.id.split("_");
+  var ith_row = parseInt(ith_row_string_split[1]);
+
+  var username_tag_id_identifier = "username_" + ith_row;
+  var username_element = document.getElementById(username_tag_id_identifier);
+  var username_value = username_element.innerHTML;
+
+  $.ajax({
+		method: "POST",
+		url: "delete_user_schedule.php",
+		data: {
+      action: "delete_schedule_of_user",
+      user_to_delete: username_value
+    },
+		success: function(output) {
+			try{
+        fetch_schedule_details();
+			}catch(e){
+				console.log(e);
+			}
+		}
+	});
+}
+
+$( document ).ready(function() {
+  fetch_schedule_details();
+});
+</script>
+</html>
