@@ -32,9 +32,10 @@ function generate_table(json_encoded_data){
     return table_header;
   }
 
-  var table_contents = "<thead id=\'thread_container\' class=\"thead-default\"><tr>";
   //get the column names of the columns
   var the_keys = Object.keys(contents[0])
+
+  var table_contents = "<thead id=\'thread_container\' class=\"thead-default\"><tr>";
 
   //create the header row
   for(var key of the_keys){
@@ -43,18 +44,42 @@ function generate_table(json_encoded_data){
   table_contents += "<th></th>";
   table_contents += "</tr></thread>";
 
+  //iterate through the rows to calculate the column that is most popular
+  var number_of_columns = the_keys.length;
+  var column_frequency_counts = new Array(number_of_columns).fill(0);
+  for(var i = 0; i < contents.length;i++){
+    var col_index = 0;
+    for(var key of the_keys){
+      if(contents[i][key] == '1'){
+        column_frequency_counts[col_index] += 1
+      }
+      col_index += 1;
+    }
+  }
+
+  var maximun_number_of_agreements_in_columns = Math.max.apply(Math, column_frequency_counts);
+
   //create the table rows for the contents
   for(var i = 0; i < contents.length;i++){
     table_contents += "<tr>";
+    var col_index = 0;
     for(var key of the_keys){
       if(contents[i][key] == '1'){
-        table_contents += "<td style=\'background-color:darkgrey\' align=\'center\';>	\u6765</td>";
+        if(column_frequency_counts[col_index] == maximun_number_of_agreements_in_columns){
+          table_contents += "<td style=\'background-color:darkgrey\' align=\'center\';>\u6765</td>";
+        }else{
+          table_contents += "<td align=\'center\';>	\u6765</td>";
+        }
       }else if (contents[i][key] == '0'){
-        table_contents += "<td align=\'center\';>\u4E0D</td>"; // chinese symbol for 'no';
+        if(column_frequency_counts[col_index] == maximun_number_of_agreements_in_columns){
+          table_contents += "<td style=\'background-color:darkgrey\' align=\'center\';>\u4E0D</td>";
+        }else{
+          table_contents += "<td align=\'center\';>\u4E0D</td>"; // chinese symbol for 'no';
+        }
       }else{
         table_contents += "<td id=\'username_" + i + "\'>" + contents[i][key] + "</td>";
       }
-
+      col_index +=1
     }
     table_contents += "<td><button id=\'delete_" + i + "\' class=\'btn btn-danger\' onclick=\'delete_user(this)\'>delete</button></td>";
     table_contents += "</tr>";
